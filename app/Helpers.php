@@ -77,6 +77,18 @@ use Illuminate\Support\Facades\Schema;
 
     function migrateClientTables($tbl){
 
+        Schema::connection('client')->dropIfExists($tbl.'_users');
+        Schema::connection('client')->dropIfExists($tbl.'_profile');
+        Schema::connection('client')->dropIfExists($tbl.'_roles');
+        Schema::connection('client')->dropIfExists($tbl.'_branch');
+        Schema::connection('client')->dropIfExists($tbl.'_timetable');
+        Schema::connection('client')->dropIfExists($tbl.'_owner_setup');
+        Schema::connection('client')->dropIfExists($tbl.'_time_tracking');
+        Schema::connection('client')->dropIfExists($tbl.'_branch_time');
+        Schema::connection('client')->dropIfExists($tbl.'_user_roles');
+        Schema::connection('client')->dropIfExists($tbl.'_user_branch');
+        Schema::connection('client')->dropIfExists($tbl.'_company');
+
         Schema::connection('client')->create($tbl.'_users', function ($table) {
             $table->increments('id');
             $table->string('user_id')->unique();
@@ -88,7 +100,7 @@ use Illuminate\Support\Facades\Schema;
             $table->string('last_seen')->nullable();                                              
             $table->string('api_token')->nullable();
             $table->string('remember_token')->nullable();
-            $table->string('created_by')->default('Aion'); 
+            $table->string('created_by')->default('tams'); 
             $table->string('emp_num')->nullable();             
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
@@ -105,6 +117,89 @@ use Illuminate\Support\Facades\Schema;
             $table->string('address')->nullable();
             $table->string('image')->default('Photo.png');
             $table->string('reports_to')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_roles', function ($table) {
+            $table->increments('id');
+            $table->string('role_id')->unique();
+            $table->string('name');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_branch', function ($table) {
+            $table->increments('id');
+            $table->string('branch_id')->unique();
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('company_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_timetable', function ($table) {
+            $table->increments('id');
+            $table->string('user_id');
+            $table->string('type_tracker')->nullable();            
+            $table->string('clocking_date')->nullable();
+            $table->string('timein');
+            $table->string('timeout')->nullable();
+            $table->string('company_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_owner_setup', function ($table) {
+            $table->increments('id');
+            $table->string('company_id');
+            $table->string('setup_process')->default(0);
+            $table->tinyInteger('trackown_time');
+            $table->tinyInteger('allmodules');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_time_tracking', function ($table) {
+            $table->increments('id');
+            $table->string('timetrack_id')->unique();
+            $table->string('name');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_branch_time', function ($table) {
+            $table->increments('id');
+            $table->string('branch_id');
+            $table->string('timetrack_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_user_roles', function ($table) {
+            $table->increments('id');
+            $table->string('user_id');
+            $table->string('role_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_user_branch', function ($table) {
+            $table->increments('id');
+            $table->string('user_id');
+            $table->string('branch_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+
+        Schema::connection('client')->create($tbl.'_company', function ($table) {
+            $table->increments('id');
+            $table->string('company_id')->unique();
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('email')->nullable();
+            $table->string('business_type')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

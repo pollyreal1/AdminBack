@@ -18,3 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', 'MainController@register');
+Route::post('/tenantcheck', 'MainController@tenantchecker');
+
+Route::post('/employees', 'EmployeesController@getEmployees');
+Route::post('/addemployee', 'EmployeesController@insertEmployee');

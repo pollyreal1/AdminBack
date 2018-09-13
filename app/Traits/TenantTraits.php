@@ -22,7 +22,26 @@ trait TenantTraits{
 			'link'	=>	$request->post('link')
 		]);
 
-		return $company_id;
+		$data = [
+			'company' => $company_id,
+			'owner' => [
+				'user_id' => $owner_id,
+				'email' => $request->post('email'),
+				'type' => 0,
+				'password' => $request->post('password'),
+				'company_id' => $company_id
+			],
+			'profile' => [
+				'user_id' => $owner_id,
+				'fname' => $request->post('fname'),
+				'lname' => $request->post('lname')
+			],
+			'company_info' => [
+				'company_id' => $company_id,
+				'name' => $request->post('companyname')
+			]
+		];
+		return $data;
 	}
 
 }
