@@ -22,6 +22,16 @@ class tenantSeeder extends Seeder
     		'tbl' => 'samplecorp43097612581',
     		'link' => 'samplecorp'
     	]);
+        DB::table('tenants')->insert([
+            'company_id' => '90628453711',
+            'owner_id' => '43276809517846123901',
+            'company_name' => 'Smithing Corp',
+            'owner_email' => 'jsmith@sample.com',
+            'subscription_type' =>'type2',
+            'database' => 'standard_db',
+            'tbl' => 'smithingcorp90628453711',
+            'link' => 'smithingcorp'
+        ]);
 
        	$tbl = 'samplecorp43097612581';
        	clientConnect('127.0.0.1','free_db','root');
@@ -34,5 +44,16 @@ class tenantSeeder extends Seeder
     		'company_id' => '43097612581',
             'type' => 0
     	]);
+
+        $tbl = 'smithingcorp90628453711';
+        clientConnect('127.0.0.1','standard_db','root');
+        migrateClientTables($tbl);
+        DB::connection('client')->table('smithingcorp90628453711_users')->insert([
+            'user_id' => '43276809517846123901',
+            'email' => 'jsmith@sample.com',
+            'password' => 'sample1',
+            'company_id' => '90628453711',
+            'type' => 0
+        ]);
     }
 }

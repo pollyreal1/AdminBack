@@ -152,8 +152,35 @@ class MainController extends Controller
 
     public function tenantChecker(Request $request){
 
-        $tenant = Tenants::where('link',$request->link)->first();
+        if(!empty($request->link)){
+            $tenant = Tenants::where('link',$request->link)->first();
+            
 
-        return response()->json($tenant);
+            if(!empty($tenant)){
+
+                $data = [
+                    'msg' => $tenant,
+                    'status' => 'success'
+                ];
+                return response()->json($data);
+
+            }else{
+
+                $data = [
+                    'msg' => 'link not found',
+                    'status' => 'failed'
+                ];
+                return response()->json($data);
+
+            }
+        }else{
+            $data = [
+                'msg' => 'link not found',
+                'status' => 'failed'
+            ];
+            return response()->json($data);
+        }
+        
+        
     }
 }

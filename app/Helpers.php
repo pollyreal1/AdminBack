@@ -134,7 +134,7 @@ use Illuminate\Support\Facades\Schema;
             $table->string('branch_id')->unique();
             $table->string('name');
             $table->string('address')->nullable();
-            $table->string('company_id');
+            $table->string('company_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

@@ -18,7 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', 'MainController@register');
-Route::post('/tenantcheck', 'MainController@tenantchecker');
+Route::post('/tenantcheck', 'MainController@tenantchecker')->middleware('Admin');
 
-Route::post('/employees', 'EmployeesController@getEmployees');
+Route::get('/employees', 'EmployeesController@getEmployees');
 Route::post('/addemployee', 'EmployeesController@insertEmployee');
+
+Route::get('/bundee', 'EmployeesController@getBundee');
+
+Route::get('/locations', 'EmployeesController@getLocation');
+Route::post('/addlocation', 'EmployeesController@insertLocation');
